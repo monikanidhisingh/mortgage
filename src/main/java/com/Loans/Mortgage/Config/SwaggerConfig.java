@@ -1,4 +1,4 @@
-package com.Loans.Mortgage.Config;
+package com.loans.mortgage.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
