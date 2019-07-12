@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name="property")
@@ -17,6 +18,18 @@ public class Property {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id;
 	
+	@Transient
+	private String msg;
+	
+	
+	public String getMsg() {
+		return msg;
+	}
+
+	public void setMsg(String msg) {
+		this.msg = msg;
+	}
+
 	@Column(name="loan_amount")
 	private Double loanAmount;
 	

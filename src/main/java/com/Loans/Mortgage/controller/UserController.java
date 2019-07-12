@@ -2,6 +2,7 @@ package com.loans.mortgage.controller;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,25 +25,38 @@ public class UserController {
 	@Autowired
 	UserService userService;
 
-	
+
 
 	@PostMapping("/checkOffer")
-	public ResponseEntity<List<Property>>  addUserById(@RequestBody User user) throws Exception{
+	public ResponseEntity<List<Property>>  addUserById(@RequestBody User user){
 
+		List<Property> properties=new ArrayList<Property>();
 		Period diff = Period.between(user.getDob(), LocalDate.now());
-		
-		if( diff.getYears()<25) throw new Exception("age should be greater then 25");
-		
-		if(user.getFirstName()==null||user.getLastName()==null||user.getGender()==null||
+
+		if( diff.getYears()<25) { 
+			Property property = new Property();
+			property.setMsg("age should be greater then 25");
+			properties.add(property);
+		}
+
+		else if(user.getFirstName()==null||user.getLastName()==null||user.getGender()==null||
 				user.getPan()==null||user.getDob()==null||user.getAddress()==null||
 				user.getPincode()==0||user.getSqft()==0) {
-			throw new Exception("enter complete data");
+			Property property = new Property();
+			property.setMsg("enter complete data");
+			properties.add(property);
 		}
-		
-		if(user.getSalary()<100000) throw new Exception("not eligible for loan low salary");
-		
-		return new ResponseEntity<List<Property>>(userService.checkOffer(user),HttpStatus.OK);
-		
+
+		else if(user.getSalary()<100000) { 
+			Property property = new Property();
+			property.setMsg("low salary");
+			properties.add(property);
+			}else {
+				properties = userService.checkOffer(user);
+			}
+
+		return new ResponseEntity<>(properties,HttpStatus.OK);
+
 	}
 
 

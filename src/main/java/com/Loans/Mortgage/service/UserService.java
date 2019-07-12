@@ -31,7 +31,7 @@ public class UserService {
 
 	
 
-	public List<Property> checkOffer(User user) throws Exception {
+	public List<Property> checkOffer(User user) {
 		userRepository.save(user);
 		Offer offer = offerRepository.findByPincode(user.getPincode());
 
@@ -39,7 +39,8 @@ public class UserService {
 		Double loanAmount=propertyvalue*0.8;
 		
 		if(propertyvalue<500000) {
-			throw new Exception("Not eligible for loan");
+			Property property = new Property();
+			property.setMsg("not eligible due to low loan amount");
 		}
 		
 		return propertyRepository.findByLoanAmount(loanAmount);
